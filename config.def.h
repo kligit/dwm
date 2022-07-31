@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
@@ -10,8 +10,9 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static       int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
-static const char *fonts[]          = { "noto sans:size=10:style=semibold:antialias=true, microns:size=14" };
-static const char dmenufont[]       = "noto sans:size=10:style=cursive";
+static const char *barlayout        = "t|s";
+static const char *fonts[]          = { "noto sans:size=11:style=semibold:antialias=true, microns:size=18" };
+static const char dmenufont[]       = "noto sans:size=11:style=semibold";
 static const char white[]       = "#f2f2f2";
 static const char grey1[]       = "#b0b0b0";
 static const char grey2[]       = "#464646";
@@ -19,12 +20,13 @@ static const char black[]       = "#000000";
 static const char lila[]        = "#a334ee";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { grey1,     black,     black },
-	[SchemeSel]  = { white,     black,     lila },
+	[SchemeNorm] = { white,     black,     black },
+	[SchemeSel]  = { black,     grey2,     lila },
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "\ue750", "\ue750", "\ue750", "\ue750", "\ue750", "\ue750", "\ue750", "\ue750", "\ue750" };
+static const char *alttags[] = { "\ue751", "\ue751", "\ue751", "\ue751", "\ue751", "\ue751", "\ue751", "\ue751", "\ue751" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -71,6 +73,7 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+#define HOLDKEY Mod4Mask // replace 0 with the keysym to activate holdbar
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -112,7 +115,9 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-//{ MODKEY,                       XK_c,      setlayout,      {.v = &layouts[]}  }
+  { MODKEY,                       XK_d,      setlayout,      {.v = &layouts[4]} },
+  { MODKEY,                       XK_b,      setlayout,      {.v = &layouts[5]} },
+  { MODKEY,                       XK_c,      setlayout,      {.v = &layouts[11]} },
 //{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 //{ MODKEY,                       XK_space,  setlayout,      {0} },
   { MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
@@ -132,6 +137,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ 0,                            HOLDKEY,   holdbar,        {0} },
 };
 
 /* button definitions */
@@ -150,4 +156,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
